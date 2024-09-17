@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AssemblyName>GerardSmit.AspNetCore.MultiTenant</AssemblyName>
+        <RootNamespace>GerardSmit.AspNetCore.MultiTenant</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>GerardSmit.AspNetCore.Tenant</PackageId>
+        <Description>Simple tenant management for ASP.NET Core</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AspNetCore.MultiTenant.Abstractions\AspNetCore.MultiTenant.Abstractions.csproj" />
+    </ItemGroup>
+
+</Project>
