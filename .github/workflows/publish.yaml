@@ -25,7 +25,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Publish MultiTenant
-        uses: GerardSmit/publish-nuget@v4.0.1
+        uses: GerardSmit/publish-nuget@v4.0.2
         with:
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
           VERSION_FILE_PATH: Directory.Build.props
