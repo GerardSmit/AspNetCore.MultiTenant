@@ -11,6 +11,11 @@
         <RootNamespace>GerardSmit.AspNetCore.MultiTenant</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>GerardSmit.AspNetCore.MultiTenant.Abstractions</PackageId>
+        <Description>Simple tenant management for ASP.NET Core</Description>
+    </PropertyGroup>
+
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>

@@ -12,7 +12,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <PackageId>GerardSmit.AspNetCore.Tenant</PackageId>
+        <PackageId>GerardSmit.AspNetCore.MultiTenant</PackageId>
         <Description>Simple tenant management for ASP.NET Core</Description>
     </PropertyGroup>
 

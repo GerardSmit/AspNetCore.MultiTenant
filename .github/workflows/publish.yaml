@@ -24,7 +24,7 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
-      - name: Publish ImageResizer
+      - name: Publish MultiTenant
         uses: GerardSmit/publish-nuget@v4.0.1
         with:
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
