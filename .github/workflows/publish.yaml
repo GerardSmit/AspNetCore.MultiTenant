@@ -1,0 +1,34 @@
+name: .NET
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: |
+            8.0.x
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Publish ImageResizer
+        uses: GerardSmit/publish-nuget@v4.0.0
+        with:
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+          VERSION_FILE_PATH: Directory.Build.props
+          PROJECT_FILE_PATH: |
+            src/AspNetCore.MultiTenant.Abstractions/AspNetCore.MultiTenant.Abstractions.csproj
+            src/AspNetCore.MultiTenant/AspNetCore.MultiTenant.csproj
