@@ -18,6 +18,7 @@ public sealed class TenantService(
     private readonly ConcurrentDictionary<string, TenantContext> _tenantServiceProviders = new();
     private readonly SemaphoreSlim _semaphore = new(1, 1);
     private readonly IHostEnvironment _hostEnvironment = hostServiceProvider.GetRequiredService<IHostEnvironment>();
+    private readonly IWebHostEnvironment? _webHostEnvironment = hostServiceProvider.GetService<IWebHostEnvironment>();
 
     public IEnumerable<ITenantContext> ActiveTenants => _tenantServiceProviders.Values;
 
@@ -91,7 +92,8 @@ public sealed class TenantService(
             tenant = new TenantContext(code);
 
             var services = new ServiceCollection();
-            var builder = new TenantBuilder(services, code, hostServiceProvider);
+            var environment = new TenantWebHostEnvironment(_hostEnvironment, _webHostEnvironment);
+            var builder = new TenantBuilder(services, code, hostServiceProvider, environment);
 
             services.AddSingleton<TenantRequestDelegates>();
 
@@ -109,9 +111,8 @@ public sealed class TenantService(
             services.TryAddSingleton<IHostContext>(new HostContext(hostServiceProvider));
             services.TryAddScoped<IMiddlewareFactory, MiddlewareFactory>();
 
-            var webHostEnvironment = new TenantWebHostEnvironment(_hostEnvironment);
-            services.TryAddSingleton<IWebHostEnvironment>(webHostEnvironment);
-            services.TryAddSingleton<IHostEnvironment>(webHostEnvironment);
+            services.TryAddSingleton<IWebHostEnvironment>(environment);
+            services.TryAddSingleton<IHostEnvironment>(environment);
 
             serviceProvider = services.BuildServiceProvider();
             tenant.Services = serviceProvider;

@@ -4,24 +4,27 @@ using Microsoft.Extensions.Hosting;
 
 namespace GerardSmit.AspNetCore.MultiTenant.Hosting;
 
-internal class TenantWebHostEnvironment(IHostEnvironment rootEnvironment, string? webRootPath = null) : IWebHostEnvironment
+internal class TenantWebHostEnvironment(
+    IHostEnvironment rootHostEnvironment,
+    IWebHostEnvironment? rootWebHostEnvironment
+) : IWebHostEnvironment
 {
     private string? _applicationName;
     private string? _environmentName;
     private string? _contentRootPath;
     private IFileProvider? _webRootFileProvider;
     private IFileProvider? _contentRootFileProvider;
-    private string? _webRootPath = webRootPath;
+    private string? _webRootPath;
 
     public string ApplicationName
     {
-        get => _applicationName ?? rootEnvironment.ApplicationName;
+        get => _applicationName ?? rootHostEnvironment.ApplicationName;
         set => _applicationName = value;
     }
 
     public string EnvironmentName
     {
-        get => _environmentName ?? rootEnvironment.EnvironmentName;
+        get => _environmentName ?? rootHostEnvironment.EnvironmentName;
         set => _environmentName = value;
     }
 
@@ -33,20 +36,20 @@ internal class TenantWebHostEnvironment(IHostEnvironment rootEnvironment, string
 
     private IFileProvider CreateContentRootFileProvider()
     {
-        if (ContentRootPath == rootEnvironment.ContentRootPath)
+        if (ContentRootPath == rootHostEnvironment.ContentRootPath)
         {
             return new PhysicalFileProvider(ContentRootPath);
         }
 
         return new CompositeFileProvider(
             new PhysicalFileProvider(ContentRootPath),
-            rootEnvironment.ContentRootFileProvider
+            rootHostEnvironment.ContentRootFileProvider
         );
     }
 
     public string ContentRootPath
     {
-        get => _contentRootPath ?? rootEnvironment.ContentRootPath;
+        get => _contentRootPath ?? rootHostEnvironment.ContentRootPath;
         set
         {
             _contentRootPath = value;
@@ -62,7 +65,7 @@ internal class TenantWebHostEnvironment(IHostEnvironment rootEnvironment, string
 
     public string WebRootPath
     {
-        get => _webRootPath ?? (rootEnvironment as IWebHostEnvironment)?.WebRootPath ?? throw new InvalidOperationException("WebRootPath not set.");
+        get => _webRootPath ?? rootWebHostEnvironment?.WebRootPath ?? throw new InvalidOperationException("WebRootPath not set.");
         set
         {
             _webRootPath = value;
